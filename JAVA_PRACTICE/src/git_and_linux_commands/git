@@ -1,0 +1,245 @@
+Git Init:
+    Use the git init command to create a new, empty repository in the current directory.
+
+    $ git init
+
+    Running this command creates a hidden .git directory. This .git directory is the brain/storage center for the repository.
+    It holds all of the configuration files and directories and is where all of the commits are stored.
+
+Git clone:
+    The git clone command is used to create an identical copy of an existing repository.
+
+    $ git clone <path-to-repository-to-clone>
+
+    This command:
+        takes the path to an existing repository
+        by default will create a directory with the same name as the repository that's being cloned
+        can be given a second argument that will be used as the name of the directory
+        will create the new repository inside of the current working directory
+
+Git status:
+    The git status command will display the current status of the repository.
+
+    $ git status
+
+    This command will:
+        tell us about new files that have been created in the Working Directory that Git hasn't started tracking, yet
+        files that Git is tracking that have been modified
+
+GIt log:
+    The git log command is used to display all of the commits of a repository.
+
+    $ git log
+    By default, this command displays:
+
+        the SHA
+        the author
+        the date
+        and the message
+        ...of every commit in the repository. I stress the "By default" part of what Git displays because the git log command can display a lot more information than just this.
+
+        Git uses the command line pager, Less, to page through all of the information. The important keys for Less are:
+
+    To scroll down, press
+        j or ↓ to move down one line at a time
+        d to move by half the page screen
+        f to move by a whole page screen
+
+    To scroll up, press
+        k or ↑ to move _up_ one line at a time
+        u to move by half the page screen
+        b to move by a whole page screen
+
+    press q to quit out of the log (returns to the regular command prompt)
+
+    git log --oneline
+        The git log command has a flag that can be used to alter how it displays the repository's information. That flag is --oneline:
+
+        $ git log --oneline
+
+    git log --stat
+        The git log command has a flag that can be used to display the files that have been changed in the commit,
+        as well as the number of lines that have been added or deleted. The flag is --stat ("stat" is short for "statistics"):
+
+        $ git log --stat
+
+    git log -p
+        The git log command has a flag that can be used to display the actual changes made to a file.
+        The flag is --patch which can be shortened to just -p:
+
+        $ git log -p
+
+        $ git log -p fdf5493
+
+    git show
+        The output of the git show command is exactly the same as the git log -p command.
+
+        $ git show
+        Running it like the example above will only display the most recent commit.
+
+        Typically, a SHA is provided as a final argument:
+        $ git show fdf5493
+        
+
+    *   -w - to ignore changes to whitespace
+
+Git add:
+    The git add command is used to move files from the Working Directory to the Staging Index.
+
+    $ git add <file1> <file2> … <fileN>
+
+    This command:
+        takes a space-separated list of file names
+        alternatively, the period '.' can be used in place of a list of files to tell Git to add the current directory (and all nested files)
+
+Git commit:
+    The git commit command takes files from the Staging Index and saves them in the repository.
+
+    $ git commit
+
+    This command:
+        will open the code editor that is specified in your configuration
+
+    Inside the code editor:
+        a commit message must be supplied
+        lines that start with a # are comments and will not be recorded
+        save the file after adding a commit message
+        close the editor to make the commit
+        Then, use git log to review the commit you just made!
+
+Git Diff:
+    The git diff command is used to see changes that have been made but haven't been committed, yet:
+
+    $ git diff
+
+    This command displays:
+        the files that have been modified
+        the location of the lines that have been added/removed
+        the actual changes that have been made
+
+Git Ignore
+    The .gitignore file is used to tell Git about the files that Git should not track.
+    This file should be placed in the same directory that the .git directory is in.
+
+Git Tag:
+    The git tag command is used to add a marker on a specific commit. The tag does not move around as new commits are added.
+
+    $ git tag -a beta
+
+    This command will:
+        add a tag to the most recent commit
+        add a tag to a specific commit if a SHA is passed
+
+    The -a flag tells Git to create an annotated flag.
+    If you don't provide the flag (i.e. git tag v1.0) then it'll create what's called a lightweight tag.
+
+    Annotated tags are recommended because they include a lot of extra information such as:
+        the person who made the tag
+        the date the tag was made
+        a message for the tag
+
+   *  A Git tag can be deleted with the -d flag (for delete!) and the name of the tag:
+      $ git tag -d v1.0
+
+   *  Provide the SHA of the commit you want to tag!
+      $ git tag -a v1.0 a87984
+
+Git branch:
+    git branch command is used to manage branches in Git:
+
+    a. to list all branches
+     $ git branch
+
+    b. to create a new "footer-fix" branch
+        $ git branch footer-fix SHA
+
+    c. to delete the "footer-fix" branch
+        $ git branch -d footer-fix
+
+    This command is used to:
+        list out local branches
+        create new branches
+        remove branches
+
+    See All Branches At Once:
+        $ git log --oneline --decorate --graph --all
+
+    Switch and Create Branch In One Command:
+        $ git checkout -b richards-branch-for-awesome-changes
+
+Git Merge:
+    The git merge command is used to combine branches in Git:
+
+    $ git merge <other-branch>
+
+    There are two types of merges:
+        Fast-forward merge – the branch being merged in must be ahead of the checked out branch. The checked out branch's
+                             pointer will just be moved forward to point to the same commit as the other branch.
+        the regular type of merge
+            two divergent branches are combined
+            a merge commit is created
+
+    If you make a merge on the wrong branch, use this command to undo the merge:
+    $ git reset --hard HEAD^
+
+    (Make sure to include the ^ character! It's a known as a "Relative Commit Reference" and indicates "the parent commit".
+
+Merge Conflict:
+    A merge conflict happens when the same line or lines have been changed on different branches that are being merged.
+    Git will pause mid-merge telling you that there is a conflict and will tell you in what file or files the conflict occurred.
+
+    To resolve the conflict in a file:
+
+    locate and remove all lines with merge conflict indicators
+    determine what to keep
+    save the file(s)
+    stage the file(s)
+    make a commit
+
+    Be careful that a file might have merge conflicts in multiple parts of the file, so make sure you check the entire
+    file for merge conflict indicators - a quick search for <<< should help you locate all of them.
+
+Changing The Last Commit:
+    With the --amend flag, you can alter the most-recent commit.
+    $ git commit --amend
+
+    Alternatively, git commit --amend will let you include files (or changes to files) you might've forgotten to include.
+
+Git revert:
+    git revert command is used to reverse a previously made commit:
+
+    $ git revert <SHA-of-commit-to-revert>
+
+    This command:
+        will undo the changes that were made by the provided commit
+        creates a new commit to record the change
+
+Git reset:
+    The git reset command is used erase commits:
+
+    $ git reset <reference-to-commit>
+
+    It can be used to:
+        move the HEAD and current branch pointer to the referenced commit
+        erase commits with the --hard flag
+        moves committed changes to the staging index with the --soft flag
+        unstages committed changes --mixed flag
+
+    Typically, ancestry references are used to indicate previous commits. The ancestry references are:
+        ^ – indicates the parent commit
+        ~ – indicates the first parent commit
+
+    Here's how we can refer to previous commits:
+    The parent commit – the following indicate the parent commit of the current commit
+        HEAD^
+        HEAD~
+        HEAD~1
+    The grandparent commit – the following indicate the grandparent commit of the current commit
+        HEAD^^
+        HEAD~2
+    The great-grandparent commit – the following indicate the great-grandparent commit of the current commit
+        HEAD^^^
+        HEAD~3
+
+Git backup branchf:
+    $ git branch backup
